@@ -1,0 +1,20 @@
+{
+  "sql": {
+    "user": "sa",
+    "password": "Nieves2006",
+    "server": "localhost",
+    "database": "AgendaryDB",
+    "options": {
+      "encrypt": false,
+      "trustServerCertificate": true
+    },
+    "pool": {
+      "max": 10,
+      "min": 0,
+      "idleTimeoutMillis": 30000
+    }
+  },
+  "server": {
+    "port": 3000
+  }
+}

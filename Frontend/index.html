@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Agenda en Línea</title>
+
+<!-- Protege la página: redirige al login si no hay sesión -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const uid = localStorage.getItem("userId");
+    console.log("DEBUG UID:", uid);
+
+    if (!uid) {
+      window.location.href = "login.html";
+    }
+  });
+</script>
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+<script src="script.js" defer></script>
+<script src="auth.js" defer></script>
+</head>
+<body>
+
+<button id="themeToggle" class="theme-btn" title="Cambiar tema">🌙</button>
+<button id="helpBtn" class="help-btn" title="Ayuda">?</button>
+<!-- Logout -->
+<button id="logoutBtn" class="help-btn" title="Cerrar sesión" style="right:16px;top:104px;background:#ff6b6b;color:white;">⎋</button>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Agenda en Línea</h1>
+    <div class="month-controls">
+      <button id="prev">◀</button>
+      <div id="monthLabel" class="monthLabel"></div>
+      <button id="next">▶</button>
+    </div>
+  </header>
+
+  <section class="legend-row">
+    <div class="legend">
+      <button class="legend-btn" data-type="clase">🔵 Clase</button>
+      <button class="legend-btn" data-type="laboratorio">🟢 Lab</button>
+      <button class="legend-btn" data-type="examen">🔴 Examen</button>
+      <button class="legend-btn" data-type="otro">🟣 Otro</button>
+    </div>
+    <div id="filterHint" class="hint"></div>
+  </section>
+
+  <main class="calendar-wrap">
+    <!-- weekday header (Dom..Sab) -->
+    <div class="weekday-header">
+      <div>Dom</div><div>Lun</div><div>Mar</div><div>Mie</div><div>Jue</div><div>Vie</div><div>Sab</div>
+    </div>
+    <div id="calendar" class="calendar" role="grid"></div>
+  </main>
+
+  <div class="actions">
+    <button id="exportMonth" class="btn accent">📤 Exportar Mes</button>
+    <button id="clearMonth" class="btn danger" id="clearMonthBtn">🗑 Limpiar mes</button>
+  </div>
+</div>
+
+<!-- Modal evento -->
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <button id="close" class="x">✖</button>
+
+    <div class="modal-left">
+      <h2 id="modalTitle">Día</h2>
+
+      <label>Tipo</label>
+      <select id="type"><option value="clase">Clase</option><option value="laboratorio">Laboratorio</option><option value="examen">Examen</option><option value="otro">Otro</option></select>
+
+      <label>Hora</label>
+      <div class="time-row">
+        <select id="hour"></select><select id="minute"></select><select id="ampm"><option>AM</option><option>PM</option></select>
+      </div>
+
+      <label>Nombre</label>
+      <input id="title" placeholder="Ej: Parcial, Lab, Clase..." />
+
+      <div class="modal-actions">
+        <button id="save" class="btn accent">Guardar</button>
+        <button id="exportDay" class="btn">📥 Exportar Día</button>
+      </div>
+
+      <h3>Eventos</h3>
+      <ul id="list" class="ev-list"></ul>
+    </div>
+
+    <div class="modal-right">
+      <h3>Planeador 24h</h3>
+      <div id="timeline" class="timeline"></div>
+      <p class="hint small">Haz click en un bloque para eliminarlo</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal ayuda -->
+<div id="helpModal" class="modal hidden" role="dialog" aria-modal="true">
+  <div class="modal-box help-box">
+    <button id="helpClose" class="x">✖</button>
+    <div class="help-content">
+      <h2>Instrucciones de uso</h2>
+      <p><strong>Presiona un día</strong> para acceder al menú y agregar un evento. Puedes escoger la categoría, la hora y agregar un nombre al evento. Al terminar de guardar tus eventos, puedes exportar una imagen (PNG) de tu horario para ese día.</p>
+      <p><strong>Filtros:</strong> Puedes presionar los botones arriba del calendario para ver solo los días que contienen un evento de ese tipo.</p>
+      <p><strong>Exportar mes:</strong> Puedes exportar una imagen del calendario completo de un mes, con puntos de colores acorde a los eventos que hay en cada día.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
